@@ -259,8 +259,10 @@ export const Navbar: React.FC = () => {
                   </span>
                 </Link>
 
-                <Link
-                  href="/admin"
+                <a
+                  href="http://localhost:3001"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center justify-between p-3 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-semibold"
                 >
@@ -268,7 +270,7 @@ export const Navbar: React.FC = () => {
                     <ShieldAlert size={18} className="text-amber-500" />
                     <span>Admin Dashboard</span>
                   </div>
-                </Link>
+                </a>
               </div>
             </div>
 

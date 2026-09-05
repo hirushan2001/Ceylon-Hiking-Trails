@@ -141,10 +141,15 @@ export const Footer: React.FC = () => {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© {new Date().getFullYear()} Ceylon Hiking Trails. All rights reserved. Made for Sri Lanka outdoor adventure.</p>
           <div className="flex items-center gap-6">
-            <Link href="/admin" className="hover:text-slate-300 transition-colors flex items-center gap-1">
+            <a
+              href="http://localhost:3001"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-slate-300 transition-colors flex items-center gap-1"
+            >
               <span>Admin Portal</span>
               <ArrowUpRight size={12} />
-            </Link>
+            </a>
             <span className="flex items-center gap-1 text-slate-400">
               Crafted with <Heart size={12} className="text-rose-500 fill-rose-500" /> in Sri Lanka
             </span>
