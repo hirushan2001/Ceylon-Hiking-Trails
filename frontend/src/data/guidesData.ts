@@ -1,0 +1,61 @@
+import { Guide } from '../types';
+
+export const GUIDES_DATA: Guide[] = [
+  {
+    id: 'g1',
+    name: 'Sanath Jayasinghe',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    location: 'Ella, Badulla',
+    experienceYears: 12,
+    rating: 4.9,
+    reviewCount: 148,
+    languages: ['English', 'Sinhala', 'German'],
+    specialties: ['High Altitude Treks', 'Bird Watching', 'Photography', 'Camping Expeditions'],
+    isVerified: true,
+    hikesLed: 420,
+    bio: 'Licensed Sri Lankan mountain guide born in Ella. Certified in wilderness first aid and expert in wildlife tracking across Ella Rock, Pekoe Trail, and Knuckles Range.',
+    coveredTrails: ['Ella Rock Trek', 'Little Adam’s Peak', 'Devil’s Staircase Trek', 'Pekoe Trail Stage 1'],
+    dailyRateUSD: 45,
+    phone: '+94 77 123 4567',
+    email: 'sanath.guides@ceylonhiking.lk'
+  },
+  {
+    id: 'g2',
+    name: 'Dinesh Perera',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
+    location: 'Matale / Kandy',
+    experienceYears: 9,
+    rating: 4.9,
+    reviewCount: 96,
+    languages: ['English', 'Sinhala', 'French'],
+    specialties: ['Knuckles Massif Wilderness', 'Waterfall Rappelling', 'Botanical Identification'],
+    isVerified: true,
+    hikesLed: 290,
+    bio: 'Specialist guide for the UNESCO Knuckles Mountain Range and Riverston peaks. Deep knowledge of endemic orchids, reptiles, and jungle survival techniques.',
+    coveredTrails: ['Knuckles Five Peaks Expedition', 'Riverston Peak & Pitawala Pathana', 'Meemure Village Trek'],
+    dailyRateUSD: 50,
+    phone: '+94 71 987 6543',
+    email: 'dinesh.knuckles@ceylonhiking.lk'
+  },
+  {
+    id: 'g3',
+    name: 'Chamila Bandara',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=1200&q=80',
+    location: 'Nuwara Eliya',
+    experienceYears: 7,
+    rating: 4.8,
+    reviewCount: 78,
+    languages: ['English', 'Sinhala', 'Tamil'],
+    specialties: ['Horton Plains Nature Trails', 'Pekoe Trail Multi-Day', 'Family Treks'],
+    isVerified: true,
+    hikesLed: 210,
+    bio: 'Passionate about high-altitude cloud forest ecology. Leads small group eco-tours in Horton Plains, Kirigalpotta, and Nuwara Eliya tea heritage walks.',
+    coveredTrails: ['Horton Plains & World’s End Loop', 'Kirigalpotta Peak Trail', 'Pekoe Trail Stage 1'],
+    dailyRateUSD: 40,
+    phone: '+94 76 555 1234',
+    email: 'chamila.highlands@ceylonhiking.lk'
+  }
+];

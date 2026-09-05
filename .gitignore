@@ -1,0 +1,18 @@
+# Node modules
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env*.local
+
+# Build outputs
+dist/
+.next/
+
+# Data storage
+.data/
+
+# OS files
+.DS_Store
+*.log

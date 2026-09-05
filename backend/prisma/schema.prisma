@@ -1,0 +1,89 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Trail {
+  id                     String                 @id @default(uuid())
+  slug                   String                 @unique
+  name                   String
+  shortDescription       String
+  description            String
+  district               String
+  province               String
+  destination            String
+  difficulty             String
+  distanceKm             Float
+  estimatedDuration      String
+  elevationGainMeters    Int
+  highestElevationMeters Int
+  trailType              String
+  bestSeason             String
+  latitude               Float
+  longitude              Float
+  heroImage              String
+  rating                 Float                  @default(5.0)
+  reviewCount            Int                    @default(0)
+  currentStatus          String                 @default("Open")
+  statusLastUpdated      String
+  isFeatured             Boolean                @default(false)
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
+
+  reviews                Review[]
+  conditionReports       TrailConditionReport[]
+}
+
+model Review {
+  id              String   @id @default(uuid())
+  trailId         String
+  userName        String
+  userAvatar      String
+  rating          Int
+  comment         String
+  likes           Int      @default(0)
+  hikeDate        String?
+  conditionRating String?
+  createdAt       DateTime @default(now())
+
+  trail           Trail    @relation(fields: [trailId], references: [id], onDelete: Cascade)
+}
+
+model TrailConditionReport {
+  id             String   @id @default(uuid())
+  trailId        String
+  trailName      String
+  status         String
+  reportedBy     String
+  userAvatar     String
+  weather        String
+  notes          String
+  waterAvailable Boolean  @default(true)
+  photoUrl       String?
+  upvotes        Int      @default(0)
+  createdAt      DateTime @default(now())
+
+  trail          Trail    @relation(fields: [trailId], references: [id], onDelete: Cascade)
+}
+
+model Guide {
+  id              String   @id @default(uuid())
+  name            String
+  avatar          String
+  heroImage       String
+  location        String
+  experienceYears Int
+  rating          Float    @default(5.0)
+  reviewCount     Int      @default(0)
+  isVerified      Boolean  @default(true)
+  hikesLed        Int      @default(0)
+  bio             String
+  dailyRateUSD    Int
+  phone           String
+  email           String
+  createdAt       DateTime @default(now())
+}
