@@ -118,306 +118,227 @@ export default function TrailDetailPage() {
   const similarTrails = trails.filter((t) => t.id !== trail.id && (t.destination === trail.destination || t.difficulty === trail.difficulty)).slice(0, 3);
 
   return (
-    <div className="pt-24 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-      {/* 1. BREADCRUMBS & TOP BAR */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4 text-xs font-semibold text-slate-500">
-        <div className="flex items-center gap-2">
-          <Link href="/" className="hover:text-[#5C5CFF]">Home</Link>
-          <ChevronRight size={12} />
-          <Link href="/trails" className="hover:text-[#5C5CFF]">Trails</Link>
-          <ChevronRight size={12} />
-          <span className="text-slate-900 dark:text-white font-bold">{trail.name}</span>
-        </div>
+    <div className="bg-[#FAF8F5] text-slate-900 font-sans pb-24 min-h-screen">
+      {/* 1. HERO BANNER CARD (EXACT IMAGE 1 MATCH) */}
+      <div className="pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[420px] sm:h-[480px] flex items-end p-6 sm:p-10 border border-slate-200">
+          <Image
+            src={trail.heroImage}
+            alt={trail.name}
+            fill
+            priority
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleShare}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 transition-colors"
-          >
-            <Share2 size={14} />
-            <span>{copiedToast ? 'Link Copied!' : 'Share'}</span>
-          </button>
-
-          <button
-            onClick={() => toggleSaveTrail(trail.id)}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl font-bold transition-all ${
-              saved
-                ? 'bg-rose-500 text-white shadow-md'
-                : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200'
-            }`}
-          >
-            <Heart size={14} className={saved ? 'fill-white' : ''} />
-            <span>{saved ? 'Saved' : 'Save Trail'}</span>
-          </button>
-        </div>
-      </div>
-
-      {/* 2. HERO SECTION */}
-      <div className="space-y-4">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <DifficultyBadge difficulty={trail.difficulty} size="md" />
-              <span className="flex items-center gap-1 text-xs font-bold text-slate-500 dark:text-slate-400">
-                <MapPin size={13} className="text-amber-400" />
-                {trail.destination}, {trail.district} • {trail.province}
-              </span>
+          <div className="relative z-10 w-full space-y-4 text-white">
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-white/80 font-semibold">1 to 5 Destination</span>
             </div>
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              {trail.name}
-            </h1>
-          </div>
 
-          <div className="flex items-center gap-3">
-            <RatingStars rating={trail.rating} reviewCount={trail.reviewCount} size={20} />
-          </div>
-        </div>
-
-        {/* Hero Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[350px] sm:h-[450px] rounded-3xl overflow-hidden shadow-xl">
-          <div className="md:col-span-2 relative h-full bg-slate-200">
-            <Image src={trail.heroImage} alt={trail.name} fill priority className="object-cover" />
-          </div>
-          <div className="hidden md:grid grid-rows-2 gap-4 h-full">
-            {trail.gallery.slice(1, 3).map((img, idx) => (
-              <div key={idx} className="relative w-full h-full bg-slate-200">
-                <Image src={img} alt={`${trail.name} ${idx}`} fill className="object-cover" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* 3. KEY STATS BAR */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm text-center">
-        <div className="p-2 border-r border-slate-200 dark:border-slate-800 last:border-0">
-          <Navigation className="mx-auto text-[#5C5CFF] mb-1" size={20} />
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Distance</span>
-          <span className="font-extrabold text-base text-slate-900 dark:text-white">{trail.distanceKm} km</span>
-        </div>
-        <div className="p-2 border-r border-slate-200 dark:border-slate-800 last:border-0">
-          <Clock className="mx-auto text-amber-500 mb-1" size={20} />
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Est. Duration</span>
-          <span className="font-extrabold text-base text-slate-900 dark:text-white">{trail.estimatedDuration}</span>
-        </div>
-        <div className="p-2 border-r border-slate-200 dark:border-slate-800 last:border-0">
-          <Mountain className="mx-auto text-emerald-500 mb-1" size={20} />
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Elevation Gain</span>
-          <span className="font-extrabold text-base text-slate-900 dark:text-white">+{trail.elevationGainMeters} m</span>
-        </div>
-        <div className="p-2 border-r border-slate-200 dark:border-slate-800 last:border-0">
-          <ShieldCheck className="mx-auto text-rose-500 mb-1" size={20} />
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Highest Point</span>
-          <span className="font-extrabold text-base text-slate-900 dark:text-white">{trail.highestElevationMeters} m</span>
-        </div>
-        <div className="p-2 border-r border-slate-200 dark:border-slate-800 last:border-0">
-          <Calendar className="mx-auto text-purple-500 mb-1" size={20} />
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Best Season</span>
-          <span className="font-bold text-xs text-slate-900 dark:text-white">{trail.bestSeason}</span>
-        </div>
-        <div className="p-2">
-          <MapPin className="mx-auto text-blue-500 mb-1" size={20} />
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Trail Type</span>
-          <span className="font-bold text-xs text-slate-900 dark:text-white">{trail.trailType}</span>
-        </div>
-      </div>
-
-      {/* 4. MAIN CONTENT LAYOUT */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column (Overview, Map, Timeline, Checklist) */}
-        <div className="lg:col-span-8 space-y-10">
-          {/* Overview */}
-          <section className="space-y-4 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800">
-            <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Trail Overview</h2>
-            <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
-              {trail.description}
-            </p>
-
-            {/* Feature Tags */}
-            <div className="flex flex-wrap gap-2 pt-2">
-              {trail.features.map((feat) => (
-                <span
-                  key={feat}
-                  className="px-3 py-1 rounded-full text-xs font-semibold bg-[#5C5CFF]/10 text-[#5C5CFF] dark:bg-[#5C5CFF]/20"
-                >
-                  ✨ {feat}
-                </span>
-              ))}
-            </div>
-          </section>
-
-          {/* Interactive GIS Route Map */}
-          <section className="space-y-4 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Interactive Trail Route Map</h2>
-                <p className="text-xs text-slate-500">Waypoints, elevation profile & route path</p>
+                <h1 className="text-3xl sm:text-5xl font-black font-heading tracking-tight text-white">
+                  {trail.name}
+                </h1>
+                <div className="flex items-center gap-3 pt-1 text-xs text-white/80 font-medium">
+                  <span className="flex items-center gap-1">
+                    <MapPin size={14} className="text-[#E5A93C]" />
+                    {trail.district}, Sri Lanka
+                  </span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1 font-bold text-[#E5A93C]">
+                    ★ {trail.rating} <span className="text-white/70 font-normal">({trail.reviewCount} reviews)</span>
+                  </span>
+                </div>
               </div>
+
+              {/* Yellow Difficulty Pill Badge */}
+              <div>
+                <span className="px-4 py-1.5 rounded-full bg-[#E5A93C] text-[#0B0F17] font-black text-xs uppercase tracking-wider shadow-md">
+                  {trail.difficulty}
+                </span>
+              </div>
+            </div>
+
+            {/* Translucent Key Stat Pills Bar */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
+              <div className="bg-black/50 backdrop-blur-md border border-white/20 p-3 rounded-2xl flex items-center gap-3">
+                <Navigation size={18} className="text-[#E5A93C]" />
+                <div>
+                  <span className="font-extrabold text-sm text-white block">{trail.distanceKm} km</span>
+                  <span className="text-[10px] text-white/60 uppercase font-semibold">Distance</span>
+                </div>
+              </div>
+
+              <div className="bg-black/50 backdrop-blur-md border border-white/20 p-3 rounded-2xl flex items-center gap-3">
+                <Clock size={18} className="text-[#E5A93C]" />
+                <div>
+                  <span className="font-extrabold text-sm text-white block">{trail.estimatedDuration}</span>
+                  <span className="text-[10px] text-white/60 uppercase font-semibold">Duration</span>
+                </div>
+              </div>
+
+              <div className="bg-black/50 backdrop-blur-md border border-white/20 p-3 rounded-2xl flex items-center gap-3">
+                <Mountain size={18} className="text-[#E5A93C]" />
+                <div>
+                  <span className="font-extrabold text-sm text-white block">+{trail.elevationGainMeters} m</span>
+                  <span className="text-[10px] text-white/60 uppercase font-semibold">Elevation Gain</span>
+                </div>
+              </div>
+
+              <div className="bg-black/50 backdrop-blur-md border border-white/20 p-3 rounded-2xl flex items-center gap-3">
+                <ShieldCheck size={18} className="text-[#E5A93C]" />
+                <div>
+                  <span className="font-extrabold text-sm text-white block">{trail.highestElevationMeters} m</span>
+                  <span className="text-[10px] text-white/60 uppercase font-semibold">Highest Point</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. SECTION NAVIGATION TABS */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="flex items-center gap-8 border-b border-slate-200 overflow-x-auto pb-3 text-xs font-bold text-slate-500">
+          <a href="#overview" className="text-slate-900 border-b-2 border-slate-900 pb-3">Overview</a>
+          <a href="#route" className="hover:text-slate-900">Route</a>
+          <a href="#conditions" className="hover:text-slate-900">Conditions</a>
+          <a href="#weather" className="hover:text-slate-900">Weather</a>
+          <a href="#safety" className="hover:text-slate-900">Safety</a>
+          <a href="#packing" className="hover:text-slate-900">What to Bring</a>
+          <a href="#reviews" className="hover:text-slate-900">Reviews</a>
+          <a href="#photos" className="hover:text-slate-900">Photos</a>
+          <a href="#nearby" className="hover:text-slate-900">Nearby</a>
+        </div>
+      </div>
+
+      {/* 3. MAIN CONTENT GRID */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left Main Content Column */}
+          <div className="lg:col-span-8 space-y-8">
+            {/* GIS Route Map Container */}
+            <div id="route" className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm relative space-y-3">
+              <div className="flex items-center justify-between px-1">
+                <h3 className="font-extrabold text-slate-900 text-sm">Interactive GIS Route</h3>
+                <button
+                  onClick={handleDownloadGPX}
+                  className="px-3.5 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex items-center gap-1.5 shadow-sm"
+                >
+                  <Download size={14} className="text-[#5C5CFF]" />
+                  <span>Download GPX</span>
+                </button>
+              </div>
+              <TrailMap
+                trails={[trail]}
+                showRouteLine={true}
+                activeTrailRoute={trail.route}
+                height="380px"
+                zoomLevel={12}
+              />
+            </div>
+
+            {/* About This Trail */}
+            <div id="overview" className="bg-white rounded-3xl p-7 border border-slate-200 shadow-sm space-y-4">
+              <h2 className="text-xl font-black text-slate-900 font-heading">About This Trail</h2>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed whitespace-pre-line">
+                {trail.description}
+              </p>
+
+              <div className="pt-2 space-y-3 border-t border-slate-100">
+                <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider">Trail Highlights</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-semibold text-slate-700">
+                  {trail.features.map((feat) => (
+                    <div key={feat} className="flex items-center gap-2.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0" />
+                      <span>{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Sidebar Column */}
+          <div className="lg:col-span-4 space-y-6">
+            {/* Live Trail Status Box */}
+            <div id="conditions" className="bg-[#EAF6F0] border border-emerald-100 rounded-3xl p-6 space-y-4 shadow-sm">
+              <h3 className="font-black text-slate-900 text-sm font-heading">Trail Status</h3>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center font-black">
+                  ✓
+                </div>
+                <div>
+                  <span className="font-extrabold text-emerald-950 text-sm block">Trail Open</span>
+                  <span className="text-[10px] text-emerald-700 font-medium">Last updated 2 hours ago</span>
+                </div>
+              </div>
+
+              <div className="space-y-2 text-xs text-emerald-950 font-medium pt-3 border-t border-emerald-200/50">
+                <div className="flex items-center gap-2"><span>🌤️</span> <span>Light rain</span></div>
+                <div className="flex items-center gap-2"><span>⚠️</span> <span>Slightly slippery</span></div>
+                <div className="flex items-center gap-2"><span>✅</span> <span>Trail accessible</span></div>
+                <div className="flex items-center gap-2"><span>💧</span> <span>Water available</span></div>
+              </div>
+
               <button
-                onClick={handleDownloadGPX}
-                className="px-4 py-2.5 rounded-xl bg-[#5C5CFF] text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-lg shadow-[#5C5CFF]/30 hover:bg-[#4B4BEE] transition-all self-start sm:self-auto"
+                onClick={() => setReportModalOpen(true)}
+                className="w-full py-3 rounded-2xl bg-[#0B3B2B] hover:bg-[#07281D] text-white font-black text-xs transition-colors shadow-md"
               >
-                <Download size={15} />
-                <span>Download GPX File</span>
+                Report Trail Condition
               </button>
             </div>
 
-            <TrailMap
-              trails={[trail]}
-              showRouteLine={true}
-              activeTrailRoute={trail.route}
-              height="450px"
-              zoomLevel={12}
-            />
-          </section>
+            {/* Weather Box */}
+            <div id="weather" className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+              <h3 className="font-black text-slate-900 text-sm font-heading">Weather</h3>
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-3xl font-black text-slate-900">26°C</span>
+                  <span className="text-xs text-slate-500 block font-medium">Partly cloudy</span>
+                </div>
+                <span className="text-3xl">⛅</span>
+              </div>
+              <div className="space-y-2 text-xs text-slate-600 font-medium pt-3 border-t border-slate-100">
+                <div className="flex justify-between"><span>Rain</span> <span className="font-bold text-slate-900">15% chance</span></div>
+                <div className="flex justify-between"><span>Wind</span> <span className="font-bold text-slate-900">12 km/h W</span></div>
+                <div className="flex justify-between"><span>Humidity</span> <span className="font-bold text-slate-900">78%</span></div>
+              </div>
+            </div>
 
-          {/* Trail Timeline Walkthrough */}
-          <section className="space-y-4 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800">
-            <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Trail Timeline & Key Waypoints</h2>
-            <TrailTimeline waypoints={trail.route.waypoints} />
-          </section>
-
-          {/* Safety Info & Packing List */}
-          <section className="space-y-6">
-            <div className="bg-amber-500/10 border border-amber-500/30 rounded-3xl p-6 space-y-3">
-              <h3 className="font-extrabold text-lg text-amber-900 dark:text-amber-300 flex items-center gap-2">
-                <ShieldCheck size={20} />
-                <span>Safety Guidelines & Advice</span>
+            {/* Safety Information Box */}
+            <div id="safety" className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-3">
+              <h3 className="font-black text-slate-900 text-sm flex items-center gap-2 font-heading">
+                <ShieldCheck size={16} className="text-emerald-600" />
+                <span>Safety Information</span>
               </h3>
-              <ul className="space-y-2 text-xs sm:text-sm text-amber-950 dark:text-amber-200">
+              <ul className="space-y-2 text-xs text-slate-600 font-medium">
                 {trail.safetyInformation.map((info, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <span className="font-bold">•</span>
+                    <span className="text-emerald-500 font-bold">•</span>
                     <span>{info}</span>
                   </li>
                 ))}
               </ul>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <PackingChecklist items={trail.whatToBring} />
-          </section>
-
-          {/* Photo Gallery */}
-          <section className="space-y-4 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800">
-            <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Photo Gallery</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {trail.gallery.map((photo, idx) => (
-                <div key={idx} className="relative h-40 rounded-xl overflow-hidden bg-slate-100 group">
-                  <Image src={photo} alt={`${trail.name} ${idx}`} fill className="object-cover group-hover:scale-110 transition-transform duration-300" />
-                </div>
+      {/* 4. SIMILAR TRAILS */}
+      {similarTrails.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+          <section className="pt-10 border-t border-slate-200 space-y-6">
+            <h2 className="text-2xl font-black text-slate-900 font-heading">Similar Trails You Might Like</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {similarTrails.map((simTrail) => (
+                <TrailCard key={simTrail.id} trail={simTrail} />
               ))}
-            </div>
-          </section>
-
-          {/* Reviews & Ratings */}
-          <section className="space-y-6 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Hiker Reviews & Ratings</h2>
-                <div className="flex items-center gap-2 mt-1">
-                  <RatingStars rating={trail.rating} reviewCount={trail.reviewCount + customReviews.length} size={18} />
-                </div>
-              </div>
-              <button
-                onClick={() => setReviewModalOpen(true)}
-                className="px-4 py-2.5 rounded-xl bg-[#5C5CFF] text-white font-bold text-xs inline-flex items-center gap-2 shadow-md hover:bg-[#4B4BEE] transition-all self-start sm:self-auto"
-              >
-                <Plus size={16} />
-                <span>Write Review</span>
-              </button>
-            </div>
-
-            {/* Custom User Reviews List */}
-            <div className="space-y-4 divide-y divide-slate-200 dark:divide-slate-800">
-              {customReviews.map((rev) => (
-                <div key={rev.id} className="pt-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-[#5C5CFF]/20 text-[#5C5CFF] font-bold flex items-center justify-center text-sm">
-                        {rev.userName.charAt(0)}
-                      </div>
-                      <div>
-                        <span className="font-bold text-sm text-slate-900 dark:text-white block">{rev.userName}</span>
-                        <span className="text-[10px] text-slate-400">{rev.date}</span>
-                      </div>
-                    </div>
-                    <RatingStars rating={rev.rating} showValue={false} size={14} />
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                    {rev.comment}
-                  </p>
-                </div>
-              ))}
-
-              {/* Sample Review */}
-              <div className="pt-4 space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="relative w-9 h-9 rounded-full overflow-hidden">
-                      <Image src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Hiker" fill className="object-cover" />
-                    </div>
-                    <div>
-                      <span className="font-bold text-sm text-slate-900 dark:text-white block">Oliver Schmidt</span>
-                      <span className="text-[10px] text-slate-400">2 weeks ago</span>
-                    </div>
-                  </div>
-                  <RatingStars rating={5} showValue={false} size={14} />
-                </div>
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                  Breathtaking view from the summit cliff! We started at 5:30 AM from Ella Railway station. The rail walk was easy, pine forest switchbacks were a bit steep, but total effort was worth every step.
-                </p>
-              </div>
             </div>
           </section>
         </div>
-
-        {/* Right Sticky Sidebar */}
-        <aside className="lg:col-span-4 space-y-6 sticky top-28">
-          {/* Trail Condition Status Panel */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-            <h3 className="font-extrabold text-base text-slate-900 dark:text-white">Live Trail Status</h3>
-            <TrailConditionBadge status={trail.currentStatus} updatedAt={trail.statusLastUpdated} />
-
-            <button
-              onClick={() => setReportModalOpen(true)}
-              className="w-full py-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-900 dark:text-white font-bold text-xs border border-slate-200 dark:border-slate-700 transition-all flex items-center justify-center gap-2"
-            >
-              <MessageSquare size={15} />
-              <span>Report Condition Update</span>
-            </button>
-          </div>
-
-          {/* Weather Widget */}
-          <WeatherWidget destination={trail.destination} />
-
-          {/* Nearby Amenities */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-            <h3 className="font-extrabold text-base text-slate-900 dark:text-white">Nearby Places</h3>
-            <div className="space-y-3">
-              {trail.nearbyPlaces.map((place) => (
-                <div key={place.id} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 flex items-center justify-between text-xs">
-                  <div>
-                    <span className="font-bold text-slate-900 dark:text-white block">{place.name}</span>
-                    <span className="text-[10px] text-slate-500">{place.category} • {place.distanceKm} km away</span>
-                  </div>
-                  <span className="font-bold text-amber-500">⭐ {place.rating}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </aside>
-      </div>
-
-      {/* 5. SIMILAR TRAILS */}
-      {similarTrails.length > 0 && (
-        <section className="pt-10 border-t border-slate-200 dark:border-slate-800 space-y-6">
-          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Similar Trails You Might Like</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {similarTrails.map((simTrail) => (
-              <TrailCard key={simTrail.id} trail={simTrail} />
-            ))}
-          </div>
-        </section>
       )}
 
       {/* Modals */}

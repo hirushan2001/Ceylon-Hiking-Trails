@@ -64,154 +64,186 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
-        <div className="flex items-center gap-2">
-          <SlidersHorizontal size={18} className="text-[#5C5CFF]" />
-          <h3 className="font-bold text-slate-900 dark:text-white text-base">Filter Trails</h3>
-          <span className="text-xs bg-[#5C5CFF]/10 text-[#5C5CFF] font-bold px-2 py-0.5 rounded-full">
-            {totalResults}
-          </span>
-        </div>
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-6 text-slate-800">
+      {/* Filters Title & Reset Header */}
+      <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 className="font-extrabold text-slate-900 text-lg">Filters</h3>
         <button
           onClick={onReset}
-          className="flex items-center gap-1 text-xs text-slate-500 hover:text-rose-500 transition-colors font-medium"
+          className="text-xs font-bold text-[#E5A93C] hover:underline"
         >
-          <RotateCcw size={13} />
-          <span>Reset</span>
+          Clear All
         </button>
       </div>
 
-      {/* Destination Dropdown */}
-      <div className="space-y-2">
-        <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Region / Destination
+      {/* Location Selectors */}
+      <div className="space-y-3">
+        <label className="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+          Location
         </label>
-        <select
-          value={filters.destination}
-          onChange={(e) => onChange({ ...filters, destination: e.target.value })}
-          className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#5C5CFF]"
-        >
-          {DESTINATION_OPTIONS.map((dest) => (
-            <option key={dest} value={dest === 'All Destinations' ? 'All' : dest}>
-              {dest}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Difficulty Selector */}
-      <div className="space-y-2">
-        <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Difficulty Level
-        </label>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {DIFFICULTY_OPTIONS.map((diff) => {
-            const active = filters.difficulty === diff;
-            return (
-              <button
-                key={diff}
-                onClick={() => onChange({ ...filters, difficulty: diff })}
-                className={`py-2 px-3 rounded-xl text-xs font-semibold border transition-all text-center ${
-                  active
-                    ? 'bg-[#5C5CFF] text-white border-[#5C5CFF] shadow-sm'
-                    : 'bg-slate-50 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-[#5C5CFF]/40'
-                }`}
-              >
-                {diff === 'All' ? 'All Difficulties' : diff}
-              </button>
-            );
-          })}
+        <div className="space-y-2">
+          <select className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-medium focus:outline-none">
+            <option>Province</option>
+            <option>Central Province</option>
+            <option>Uva Province</option>
+            <option>Sabaragamuwa</option>
+          </select>
+          <select className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-medium focus:outline-none">
+            <option>District</option>
+            <option>Badulla</option>
+            <option>Nuwara Eliya</option>
+            <option>Matale</option>
+            <option>Kandy</option>
+          </select>
+          <select
+            value={filters.destination}
+            onChange={(e) => onChange({ ...filters, destination: e.target.value })}
+            className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs font-medium focus:outline-none"
+          >
+            {DESTINATION_OPTIONS.map((dest) => (
+              <option key={dest} value={dest === 'All Destinations' ? 'All' : dest}>
+                {dest}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
-      {/* Trail Type */}
-      <div className="space-y-2">
-        <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+      {/* Difficulty Radio Filters */}
+      <div className="space-y-2.5">
+        <label className="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+          Difficulty
+        </label>
+        <div className="space-y-2 text-xs font-medium text-slate-700">
+          {[
+            { label: 'Easy', badge: 'bg-emerald-500' },
+            { label: 'Moderate', badge: 'bg-amber-500' },
+            { label: 'Difficult', badge: 'bg-orange-500' },
+            { label: 'Extreme', badge: 'bg-rose-500' }
+          ].map((item) => (
+            <label
+              key={item.label}
+              className="flex items-center gap-2.5 cursor-pointer hover:text-slate-900"
+            >
+              <input
+                type="radio"
+                name="difficulty"
+                checked={filters.difficulty === item.label}
+                onChange={() => onChange({ ...filters, difficulty: item.label as TrailDifficulty })}
+                className="w-4 h-4 accent-[#E5A93C] cursor-pointer"
+              />
+              <span className={`w-2.5 h-2.5 rounded-full ${item.badge}`} />
+              <span>{item.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Distance Radio List */}
+      <div className="space-y-2.5">
+        <label className="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+          Distance
+        </label>
+        <div className="space-y-2 text-xs font-medium text-slate-700">
+          {[
+            { label: 'Under 5 km', val: 5 },
+            { label: '5 - 10 km', val: 10 },
+            { label: '10 - 20 km', val: 20 },
+            { label: '20+ km', val: 25 }
+          ].map((dist) => (
+            <label key={dist.label} className="flex items-center gap-2.5 cursor-pointer hover:text-slate-900">
+              <input
+                type="radio"
+                name="distance"
+                checked={filters.maxDistance === dist.val}
+                onChange={() => onChange({ ...filters, maxDistance: dist.val })}
+                className="w-4 h-4 accent-[#E5A93C] cursor-pointer"
+              />
+              <span>{dist.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Duration Radio List */}
+      <div className="space-y-2.5">
+        <label className="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+          Duration
+        </label>
+        <div className="space-y-2 text-xs font-medium text-slate-700">
+          {[
+            { label: 'Under 2 hours', hrs: 2 },
+            { label: '2 - 4 hours', hrs: 4 },
+            { label: '4 - 8 hours', hrs: 8 },
+            { label: '8+ hours', hrs: 10 }
+          ].map((dur) => (
+            <label key={dur.label} className="flex items-center gap-2.5 cursor-pointer hover:text-slate-900">
+              <input
+                type="radio"
+                name="duration"
+                checked={filters.maxDurationHours === dur.hrs}
+                onChange={() => onChange({ ...filters, maxDurationHours: dur.hrs })}
+                className="w-4 h-4 accent-[#E5A93C] cursor-pointer"
+              />
+              <span>{dur.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Trail Type Checkboxes */}
+      <div className="space-y-2.5">
+        <label className="text-xs font-bold text-slate-900 uppercase tracking-wider block">
           Trail Type
         </label>
-        <select
-          value={filters.trailType}
-          onChange={(e) => onChange({ ...filters, trailType: e.target.value as TrailType | 'All' })}
-          className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#5C5CFF]"
-        >
-          {TRAIL_TYPES.map((type) => (
-            <option key={type} value={type}>
-              {type === 'All' ? 'All Trail Types' : type}
-            </option>
+        <div className="space-y-2 text-xs font-medium text-slate-700">
+          {TRAIL_TYPES.filter((t) => t !== 'All').map((type) => (
+            <label key={type} className="flex items-center gap-2.5 cursor-pointer hover:text-slate-900">
+              <input
+                type="checkbox"
+                checked={filters.trailType === type}
+                onChange={() =>
+                  onChange({
+                    ...filters,
+                    trailType: filters.trailType === type ? 'All' : (type as TrailType)
+                  })
+                }
+                className="w-4 h-4 accent-[#E5A93C] rounded cursor-pointer"
+              />
+              <span>{type}</span>
+            </label>
           ))}
-        </select>
-      </div>
-
-      {/* Distance Slider */}
-      <div className="space-y-2">
-        <div className="flex justify-between items-center text-xs">
-          <label className="font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-            Max Distance
-          </label>
-          <span className="font-bold text-[#5C5CFF]">
-            {filters.maxDistance >= 25 ? 'Any distance' : `Up to ${filters.maxDistance} km`}
-          </span>
-        </div>
-        <input
-          type="range"
-          min="2"
-          max="25"
-          step="1"
-          value={filters.maxDistance}
-          onChange={(e) => onChange({ ...filters, maxDistance: Number(e.target.value) })}
-          className="w-full accent-[#5C5CFF]"
-        />
-        <div className="flex justify-between text-[10px] text-slate-400">
-          <span>2 km</span>
-          <span>10 km</span>
-          <span>25+ km</span>
         </div>
       </div>
 
-      {/* Features Chips */}
-      <div className="space-y-2">
-        <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Special Highlights
+      {/* Features Checkboxes */}
+      <div className="space-y-2.5">
+        <label className="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+          Features
         </label>
-        <div className="flex flex-wrap gap-1.5">
-          {FEATURE_CHIPS.map((feat) => {
-            const selected = filters.features.includes(feat);
-            return (
-              <button
-                key={feat}
-                onClick={() => toggleFeature(feat)}
-                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
-                  selected
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold'
-                    : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-amber-400/50'
-                }`}
-              >
-                {selected && <Check size={12} />}
-                <span>{feat}</span>
-              </button>
-            );
-          })}
+        <div className="space-y-2 text-xs font-medium text-slate-700">
+          {FEATURE_CHIPS.map((feat) => (
+            <label key={feat} className="flex items-center gap-2.5 cursor-pointer hover:text-slate-900">
+              <input
+                type="checkbox"
+                checked={filters.features.includes(feat)}
+                onChange={() => toggleFeature(feat)}
+                className="w-4 h-4 accent-[#E5A93C] rounded cursor-pointer"
+              />
+              <span>{feat}</span>
+            </label>
+          ))}
         </div>
       </div>
 
-      {/* Sort Option */}
-      <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-        <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Sort Results By
-        </label>
-        <select
-          value={filters.sortBy}
-          onChange={(e) => onChange({ ...filters, sortBy: e.target.value as FilterValues['sortBy'] })}
-          className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#5C5CFF]"
+      {/* Reset Filters CTA Button */}
+      <div className="pt-2">
+        <button
+          onClick={onReset}
+          className="w-full py-3 rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-extrabold transition-colors"
         >
-          <option value="popular">Most Popular</option>
-          <option value="rating">Highest Rated</option>
-          <option value="distance_asc">Shortest Distance</option>
-          <option value="distance_desc">Longest Distance</option>
-          <option value="elevation_desc">Highest Elevation Gain</option>
-        </select>
+          Reset Filters
+        </button>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, Suspense } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { SlidersHorizontal, Grid, List, Mountain, RotateCcw, X } from 'lucide-react';
 import { useTrails } from '../../context/TrailsContext';
@@ -112,7 +113,7 @@ function TrailsContent() {
       {/* Main Layout Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Desktop Filter Sidebar */}
-        <aside className="hidden lg:block lg:col-span-4 sticky top-28">
+        <aside className="hidden lg:block lg:col-span-3 sticky top-28">
           <FilterPanel
             filters={filters}
             onChange={setFilters}
@@ -122,52 +123,31 @@ function TrailsContent() {
         </aside>
 
         {/* Results Column */}
-        <main className="lg:col-span-8 space-y-6">
+        <main className="lg:col-span-9 space-y-6">
           {/* Top Bar Controls */}
-          <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
-            <div className="flex items-center gap-3">
-              {/* Mobile Filter Toggle */}
-              <button
-                onClick={() => setMobileFilterOpen(true)}
-                className="lg:hidden px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs flex items-center gap-2"
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            {/* Sort Dropdown */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-500">Sort By:</span>
+              <select
+                value={filters.sortBy}
+                onChange={(e) => setFilters({ ...filters, sortBy: e.target.value as FilterValues['sortBy'] })}
+                className="p-2 px-3 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold text-xs focus:outline-none"
               >
-                <SlidersHorizontal size={16} className="text-[#5C5CFF]" />
-                <span>Filters</span>
-                <span className="w-5 h-5 rounded-full bg-[#5C5CFF] text-white text-[10px] flex items-center justify-center">
-                  {filteredTrails.length}
-                </span>
-              </button>
-
-              <span className="text-xs font-bold text-slate-600 dark:text-slate-400">
-                Showing <strong className="text-slate-900 dark:text-white">{filteredTrails.length}</strong> of {trails.length} Trails
-              </span>
+                <option value="popular">Popular</option>
+                <option value="rating">Highest Rated</option>
+                <option value="distance_asc">Shortest Distance</option>
+                <option value="distance_desc">Longest Distance</option>
+              </select>
             </div>
 
-            {/* View Mode Switcher */}
-            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  viewMode === 'grid'
-                    ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'
-                }`}
-                aria-label="Grid View"
-              >
-                <Grid size={16} />
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  viewMode === 'list'
-                    ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'
-                }`}
-                aria-label="List View"
-              >
-                <List size={16} />
-              </button>
-            </div>
+            {/* View on Map Button */}
+            <Link
+              href="/map"
+              className="px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 font-bold text-xs flex items-center gap-2 shadow-sm transition-colors"
+            >
+              <span>View on Map</span>
+            </Link>
           </div>
 
           {/* Empty State */}
@@ -190,12 +170,12 @@ function TrailsContent() {
             </div>
           )}
 
-          {/* Grid / List Results */}
+          {/* 3-Column Grid Results */}
           {filteredTrails.length > 0 && (
             <div
               className={
                 viewMode === 'grid'
-                  ? 'grid grid-cols-1 sm:grid-cols-2 gap-6'
+                  ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'
                   : 'space-y-4'
               }
             >

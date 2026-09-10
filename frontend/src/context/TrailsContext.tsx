@@ -127,6 +127,10 @@ export const TrailsProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setUserProfile((prev) => ({ ...prev, ...profileUpdate }));
   };
 
+  useEffect(() => {
+    document.documentElement.classList.remove('dark');
+  }, [darkMode]);
+
   const toggleDarkMode = () => {
     setDarkMode((prev) => !prev);
   };

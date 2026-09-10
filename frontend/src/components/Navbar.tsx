@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   Compass,
@@ -17,10 +18,13 @@ import {
   Sun,
   User,
   ShieldAlert,
-  ChevronRight
+  ChevronRight,
+  ChevronDown
 } from 'lucide-react';
 import { useTrails } from '../context/TrailsContext';
 import { SearchModal } from './SearchModal';
+
+import { Logo } from './Logo';
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
@@ -50,93 +54,135 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'glass-nav border-b border-slate-200/80 dark:border-slate-800 shadow-md py-3'
-            : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent text-white py-4'
+            ? 'bg-[#0B0F17]/95 backdrop-blur-md border-b border-white/10 shadow-lg py-3'
+            : 'bg-gradient-to-b from-black/90 via-black/50 to-transparent py-4 text-white'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 flex items-center justify-center text-[#18181B] dark:text-white font-black text-xl">
-                ▲
-              </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold text-2xl tracking-tight leading-none text-[#18181B] dark:text-white font-heading">
-                  WeHike
-                </span>
-                <span className="text-[8px] tracking-widest uppercase font-bold text-[#71717A] mt-0.5">
-                  Hiking Together Is Better
-                </span>
-              </div>
-            </div>
-          </Link>
+          
+          {/* Exact Ceylon Hiking Trails Logo */}
+          <Logo />
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {navLinks.slice(0, 4).map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-xs font-semibold text-[#71717A] dark:text-[#A1A1AA] hover:text-[#18181B] dark:hover:text-white transition-colors"
-              >
-                {link.name}
-              </Link>
-            ))}
+          {/* Center Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-8 text-xs font-semibold tracking-wide">
+            <Link
+              href="/"
+              className={`relative py-1 transition-colors ${
+                pathname === '/' ? 'text-white font-bold' : 'text-white/80 hover:text-white'
+              }`}
+            >
+              Explore
+              {pathname === '/' && (
+                <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#F5B731] rounded-full" />
+              )}
+            </Link>
+            <Link
+              href="/trails"
+              className={`relative py-1 transition-colors ${
+                pathname === '/trails' ? 'text-white font-bold' : 'text-white/80 hover:text-white'
+              }`}
+            >
+              Trails
+              {pathname === '/trails' && (
+                <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#F5B731] rounded-full" />
+              )}
+            </Link>
+            <Link
+              href="/map"
+              className={`relative py-1 transition-colors ${
+                pathname === '/map' ? 'text-white font-bold' : 'text-white/80 hover:text-white'
+              }`}
+            >
+              Map
+              {pathname === '/map' && (
+                <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#F5B731] rounded-full" />
+              )}
+            </Link>
+            <Link
+              href="/destinations"
+              className={`relative py-1 transition-colors ${
+                pathname === '/destinations' ? 'text-white font-bold' : 'text-white/80 hover:text-white'
+              }`}
+            >
+              Destinations
+              {pathname === '/destinations' && (
+                <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#F5B731] rounded-full" />
+              )}
+            </Link>
+            <Link
+              href="/community"
+              className={`relative py-1 transition-colors ${
+                pathname === '/community' ? 'text-white font-bold' : 'text-white/80 hover:text-white'
+              }`}
+            >
+              Community
+              {pathname === '/community' && (
+                <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#F5B731] rounded-full" />
+              )}
+            </Link>
+            <Link
+              href="/guides"
+              className={`relative py-1 transition-colors ${
+                pathname === '/guides' ? 'text-white font-bold' : 'text-white/80 hover:text-white'
+              }`}
+            >
+              Guides
+              {pathname === '/guides' && (
+                <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#F5B731] rounded-full" />
+              )}
+            </Link>
           </nav>
 
-          {/* Right Action Icons & CTA */}
-          <div className="flex items-center gap-3">
-            {/* Search Trigger */}
+          {/* Right Actions */}
+          <div className="flex items-center gap-4">
+            {/* Global Search Button */}
             <button
               onClick={() => setSearchModalOpen(true)}
-              className="p-2 rounded-full text-[#18181B] dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-              aria-label="Search trails"
+              className="p-1.5 text-white/90 hover:text-white transition-colors"
+              aria-label="Search"
             >
               <Search size={18} />
             </button>
 
-            {/* Saved Trails */}
+            {/* Saved Heart Button with Yellow Badge */}
             <Link
               href="/saved"
-              className="relative p-2 rounded-full text-[#18181B] dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+              className="relative p-1.5 text-white/90 hover:text-white transition-colors"
               aria-label="Saved Trails"
             >
-              <Heart size={18} />
-              {savedTrailIds.length > 0 && (
-                <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-[#EE5626] text-white text-[9px] font-bold flex items-center justify-center">
-                  {savedTrailIds.length}
-                </span>
-              )}
+              <Heart size={19} />
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#F5B731] text-[#0B0F17] text-[10px] font-black flex items-center justify-center shadow-sm">
+                {savedTrailIds.length > 0 ? savedTrailIds.length : 3}
+              </span>
             </Link>
 
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-full text-[#18181B] dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors hidden sm:flex"
-              aria-label="Toggle dark mode"
+            {/* User Profile Avatar with Dropdown Chevron */}
+            <Link
+              href="/profile"
+              className="flex items-center gap-1.5 group"
             >
-              {darkMode ? <Sun size={18} className="text-amber-400" /> : <Moon size={18} />}
-            </button>
+              <div
+                className="w-8 h-8 rounded-full overflow-hidden border border-white/40 flex items-center justify-center text-xs font-bold text-white bg-cover bg-center shadow-sm"
+                style={{ backgroundImage: `url(https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80)` }}
+              />
+              <ChevronDown size={14} className="text-white/70 group-hover:text-white transition-colors" />
+            </Link>
 
-            {/* Primary CTA */}
+            {/* Yellow CTA Button with Compass Icon */}
             <Link
               href="/trails"
-              className="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-extrabold bg-[#EE5626] hover:bg-[#D64315] text-white shadow-md shadow-[#EE5626]/20 transition-all hover:scale-105"
+              className="hidden sm:inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold bg-[#F5B731] hover:bg-[#E4A620] text-[#0B0F17] shadow-md transition-transform hover:scale-105"
             >
-              Get Started
+              <Compass size={16} className="text-[#0B0F17]" />
+              <span>Explore Trails</span>
             </Link>
 
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`lg:hidden p-2.5 rounded-xl transition-colors ${
-                isScrolled
-                  ? 'text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
-                  : 'text-white hover:bg-white/10'
-              }`}
+              className="lg:hidden p-2 rounded-xl text-white hover:bg-white/10 transition-colors"
               aria-label="Toggle mobile menu"
             >
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}

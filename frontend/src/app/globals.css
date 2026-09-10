@@ -2,37 +2,37 @@
 
 @layer base {
   :root {
-    --primary: #EE5626;
-    --primary-hover: #D64315;
-    --secondary: #F7931E;
-    --bg-main: #F7F2EE;
+    --primary: #E5A93C;
+    --primary-hover: #D4982B;
+    --secondary: #0F2E24;
+    --bg-main: #F8F9FA;
     --bg-card: #FFFFFF;
-    --bg-accent: #EFE8E1;
-    --text-main: #18181B;
-    --text-muted: #71717A;
-    --border-color: #E4DDD5;
+    --bg-accent: #111827;
+    --text-main: #0F172A;
+    --text-muted: #64748B;
+    --border-color: #E2E8F0;
   }
 
   .dark {
-    --bg-main: #121110;
-    --bg-card: #1C1A18;
-    --bg-accent: #24211E;
-    --text-main: #F7F2EE;
-    --text-muted: #A1A1AA;
-    --border-color: #2E2A26;
+    --bg-main: #0B0F17;
+    --bg-card: #111827;
+    --bg-accent: #1F2937;
+    --text-main: #F8FAFC;
+    --text-muted: #94A3B8;
+    --border-color: #1E293B;
   }
 }
 
 body {
   background-color: var(--bg-main);
   color: var(--text-main);
-  font-family: 'Urbanist', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', 'Manrope', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {
-  font-family: 'Urbanist', system-ui, -apple-system, sans-serif;
-  letter-spacing: -0.02em;
+  font-family: 'Inter', 'Manrope', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.03em;
 }
 
 /* Glassmorphism helper */
