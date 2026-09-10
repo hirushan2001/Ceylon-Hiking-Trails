@@ -1,0 +1,9 @@
+export { HeroSection } from './HeroSection';
+export { PopularTrailsSection } from './PopularTrailsSection';
+export { ExploreDifficultySection } from './ExploreDifficultySection';
+export { FeaturedAdventureSection } from './FeaturedAdventureSection';
+export { HowItWorksSection } from './HowItWorksSection';
+export { HomeMapSection } from './HomeMapSection';
+export { TestimonialsSection } from './TestimonialsSection';
+export { TravelTipsSection } from './TravelTipsSection';
+export { NewsletterSection } from './NewsletterSection';
