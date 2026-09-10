@@ -58,54 +58,41 @@ export const Navbar: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#5C5CFF] to-[#8080FF] text-white flex items-center justify-center font-black text-xl shadow-lg shadow-[#5C5CFF]/30 group-hover:scale-105 transition-transform">
-              ⛺
-            </div>
-            <div className="flex flex-col">
-              <span className="font-extrabold text-lg tracking-tight leading-tight group-hover:text-[#5C5CFF] transition-colors">
-                Ceylon Hiking Trails
-              </span>
-              <span className="text-[10px] tracking-wider uppercase font-semibold text-amber-400">
-                Explore Sri Lanka
-              </span>
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 flex items-center justify-center text-[#18181B] dark:text-white font-black text-xl">
+                ▲
+              </div>
+              <div className="flex flex-col">
+                <span className="font-extrabold text-2xl tracking-tight leading-none text-[#18181B] dark:text-white font-heading">
+                  WeHike
+                </span>
+                <span className="text-[8px] tracking-widest uppercase font-bold text-[#71717A] mt-0.5">
+                  Hiking Together Is Better
+                </span>
+              </div>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 bg-slate-900/10 dark:bg-slate-800/40 backdrop-blur-md p-1.5 rounded-full border border-white/10 dark:border-slate-700/50">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              const Icon = link.icon;
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
-                    isActive
-                      ? 'bg-[#5C5CFF] text-white shadow-md shadow-[#5C5CFF]/20'
-                      : isScrolled
-                      ? 'text-slate-700 dark:text-slate-200 hover:text-[#5C5CFF] dark:hover:text-[#5C5CFF]'
-                      : 'text-white/90 hover:text-white hover:bg-white/10'
-                  }`}
-                >
-                  {Icon && <Icon size={14} />}
-                  <span>{link.name}</span>
-                </Link>
-              );
-            })}
+          <nav className="hidden lg:flex items-center gap-8">
+            {navLinks.slice(0, 4).map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-xs font-semibold text-[#71717A] dark:text-[#A1A1AA] hover:text-[#18181B] dark:hover:text-white transition-colors"
+              >
+                {link.name}
+              </Link>
+            ))}
           </nav>
 
           {/* Right Action Icons & CTA */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-3">
             {/* Search Trigger */}
             <button
               onClick={() => setSearchModalOpen(true)}
-              className={`p-2.5 rounded-full transition-colors ${
-                isScrolled
-                  ? 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  : 'text-white/90 hover:bg-white/10'
-              }`}
+              className="p-2 rounded-full text-[#18181B] dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
               aria-label="Search trails"
             >
               <Search size={18} />
@@ -114,16 +101,12 @@ export const Navbar: React.FC = () => {
             {/* Saved Trails */}
             <Link
               href="/saved"
-              className={`relative p-2.5 rounded-full transition-colors ${
-                isScrolled
-                  ? 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  : 'text-white/90 hover:bg-white/10'
-              }`}
+              className="relative p-2 rounded-full text-[#18181B] dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
               aria-label="Saved Trails"
             >
               <Heart size={18} />
               {savedTrailIds.length > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center">
+                <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-[#EE5626] text-white text-[9px] font-bold flex items-center justify-center">
                   {savedTrailIds.length}
                 </span>
               )}
@@ -132,35 +115,18 @@ export const Navbar: React.FC = () => {
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleDarkMode}
-              className={`p-2.5 rounded-full transition-colors hidden sm:flex ${
-                isScrolled
-                  ? 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  : 'text-white/90 hover:bg-white/10'
-              }`}
+              className="p-2 rounded-full text-[#18181B] dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors hidden sm:flex"
               aria-label="Toggle dark mode"
             >
               {darkMode ? <Sun size={18} className="text-amber-400" /> : <Moon size={18} />}
             </button>
 
-            {/* User Profile */}
-            <Link
-              href="/profile"
-              className={`p-2.5 rounded-full transition-colors hidden sm:flex ${
-                isScrolled
-                  ? 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  : 'text-white/90 hover:bg-white/10'
-              }`}
-              aria-label="User Profile"
-            >
-              <User size={18} />
-            </Link>
-
             {/* Primary CTA */}
             <Link
               href="/trails"
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#5C5CFF] hover:bg-[#4B4BEE] text-white shadow-lg shadow-[#5C5CFF]/30 hover:scale-105 transition-all"
+              className="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-extrabold bg-[#EE5626] hover:bg-[#D64315] text-white shadow-md shadow-[#EE5626]/20 transition-all hover:scale-105"
             >
-              <span>Explore Trails</span>
+              Get Started
             </Link>
 
             {/* Mobile Menu Toggle */}
